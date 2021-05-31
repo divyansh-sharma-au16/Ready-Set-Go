@@ -1,6 +1,7 @@
 /* eslint-disable import/no-useless-path-segments */
 const express = require('express');
 const tourController = require('./../controllers/tourController');
+const authController = require('./../controllers/authController');
 
 const router = express.Router();
 
@@ -11,7 +12,10 @@ router
 router.route('/tour-stats').get(tourController.getTourStats);
 router.route('/monthly-plan/:year').get(tourController.getMonthlyPlan);
 
-router.route('/').get(tourController.getallTours).post(tourController.addTour);
+router
+  .route('/')
+  .get(authController.protect, tourController.getallTours)
+  .post(tourController.addTour);
 router
   .route('/:id')
   .get(tourController.getTour)
